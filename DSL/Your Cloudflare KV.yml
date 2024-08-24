@@ -1,0 +1,467 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Your Cloudflare KV
+kind: app
+version: 0.1.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1724439010909-source-1724439183874-target
+      source: '1724439010909'
+      sourceHandle: source
+      target: '1724439183874'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1724439183874-true-1724439220250-target
+      source: '1724439183874'
+      sourceHandle: 'true'
+      target: '1724439220250'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1724439183874-86db94e3-73ac-4cc4-9fe8-5570ff720710-1724439287007-target
+      source: '1724439183874'
+      sourceHandle: 86db94e3-73ac-4cc4-9fe8-5570ff720710
+      target: '1724439287007'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: 1724439220250-source-1724439383646-target
+      source: '1724439220250'
+      sourceHandle: source
+      target: '1724439383646'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: 1724439287007-source-1724439383646-target
+      source: '1724439287007'
+      sourceHandle: source
+      target: '1724439383646'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: end
+      id: 1724439383646-source-1724439403932-target
+      source: '1724439383646'
+      sourceHandle: source
+      target: '1724439403932'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1724439183874-false-1724439436176-target
+      source: '1724439183874'
+      sourceHandle: 'false'
+      target: '1724439436176'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: 1724439436176-source-1724439538081-target
+      source: '1724439436176'
+      sourceHandle: source
+      target: '1724439538081'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: auth_bearer
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: auth_bearer
+        - label: account_id
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: account_id
+        - label: namespace_id
+          max_length: 256
+          options: []
+          required: true
+          type: text-input
+          variable: namespace_id
+        - label: method
+          max_length: 48
+          options:
+          - get_value
+          - new_kv
+          required: true
+          type: select
+          variable: method
+        - label: key_name
+          max_length: 511
+          options: []
+          required: true
+          type: paragraph
+          variable: key_name
+        - label: value (25MiB Max)
+          max_length: 24000000
+          options: []
+          required: false
+          type: paragraph
+          variable: value
+      height: 220
+      id: '1724439010909'
+      position:
+        x: 30
+        y: 310
+      positionAbsolute:
+        x: 30
+        y: 310
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: is
+            id: 604b40e2-9c23-448f-956a-ca0896a5da07
+            value: get_value
+            varType: string
+            variable_selector:
+            - '1724439010909'
+            - method
+          id: 'true'
+          logical_operator: and
+        - case_id: 86db94e3-73ac-4cc4-9fe8-5570ff720710
+          conditions:
+          - comparison_operator: is
+            id: b66ac527-0bf1-4797-988e-e285455109ad
+            value: new_kv
+            varType: string
+            variable_selector:
+            - '1724439010909'
+            - method
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 174
+      id: '1724439183874'
+      position:
+        x: 334
+        y: 310
+      positionAbsolute:
+        x: 334
+        y: 310
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import httpx\n\ndef main(auth_bearer: str, account_id: str, namespace_id:\
+          \ str, key_name: str) -> dict:\n    url = f\"https://api.cloudflare.com/client/v4/accounts/{account_id}/storage/kv/namespaces/{namespace_id}/values/{key_name}\"\
+          \n    headers = {\n        \"Content-Type\": \"application/json\",\n   \
+          \     \"Authorization\": f\"Bearer {auth_bearer}\"\n    }\n    with httpx.Client()\
+          \ as client:\n        response = client.get(url, headers=headers)\n    return\
+          \ {\n        \"full\": response.text,\n        \"type\": str(type(response))\n\
+          \    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          full:
+            children: null
+            type: string
+          type:
+            children: null
+            type: string
+        selected: false
+        title: get_value
+        type: code
+        variables:
+        - value_selector:
+          - '1724439010909'
+          - auth_bearer
+          variable: auth_bearer
+        - value_selector:
+          - '1724439010909'
+          - account_id
+          variable: account_id
+        - value_selector:
+          - '1724439010909'
+          - namespace_id
+          variable: namespace_id
+        - value_selector:
+          - '1724439010909'
+          - key_name
+          variable: key_name
+      height: 54
+      id: '1724439220250'
+      position:
+        x: 638
+        y: 310
+      positionAbsolute:
+        x: 638
+        y: 310
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import httpx\n\ndef main(key: str, value: str, auth_bearer: str, account_id:\
+          \ str, namespace_id: str) -> dict:\n    url = f\"https://api.cloudflare.com/client/v4/accounts/{account_id}/storage/kv/namespaces/{namespace_id}/bulk\"\
+          \n    headers = {\n        \"Content-Type\": \"application/json\",\n   \
+          \     \"Authorization\": f\"Bearer {auth_bearer}\"\n    }\n    payload =\
+          \ [{\"key\": key, \"value\": value, \"base64\": False}]\n    \n    try:\n\
+          \        with httpx.Client(timeout=30.0) as client:\n            response\
+          \ = client.put(url, json=payload, headers=headers)\n        response.raise_for_status()\n\
+          \        return {\n            \"full\": response.text,\n            \"\
+          type\": \"new_kv\"\n        }\n    except Exception as e:\n        return\
+          \ {\n            \"full\": f\"error: {e}\",\n            \"type\": \"new_kv_error\"\
+          \n        }"
+        code_language: python3
+        desc: ''
+        outputs:
+          full:
+            children: null
+            type: string
+          type:
+            children: null
+            type: string
+        selected: false
+        title: new_kv
+        type: code
+        variables:
+        - value_selector:
+          - '1724439010909'
+          - auth_bearer
+          variable: auth_bearer
+        - value_selector:
+          - '1724439010909'
+          - account_id
+          variable: account_id
+        - value_selector:
+          - '1724439010909'
+          - namespace_id
+          variable: namespace_id
+        - value_selector:
+          - '1724439010909'
+          - key_name
+          variable: key
+        - value_selector:
+          - '1724439010909'
+          - value
+          variable: value
+      height: 54
+      id: '1724439287007'
+      position:
+        x: 638
+        y: 404
+      positionAbsolute:
+        x: 638
+        y: 404
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: Variable Aggregator
+        type: variable-aggregator
+        variables:
+        - - '1724439220250'
+          - full
+        - - '1724439287007'
+          - full
+      height: 138
+      id: '1724439383646'
+      position:
+        x: 942
+        y: 310
+      positionAbsolute:
+        x: 942
+        y: 310
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1724439383646'
+          - output
+          variable: output
+        selected: false
+        title: End
+        type: end
+      height: 90
+      id: '1724439403932'
+      position:
+        x: 1246
+        y: 310
+      positionAbsolute:
+        x: 1246
+        y: 310
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import httpx\n\ndef main(auth_bearer: str) -> dict:\n    url = \"https://api.cloudflare.com/client/v4/accounts\"\
+          \n    headers = {\n        \"Content-Type\": \"application/json\",\n   \
+          \     \"Authorization\": f\"Bearer {auth_bearer}\"\n    }\n    with httpx.Client()\
+          \ as client:\n        response = client.get(url, headers=headers)\n    return\
+          \ {\n        \"full\": response.text,\n        \"type\": str(type(response))\n\
+          \    }"
+        code_language: python3
+        desc: 'If you have CF API,
+
+          but do not have account_id.
+
+          This may help.'
+        outputs:
+          full:
+            children: null
+            type: string
+          type:
+            children: null
+            type: string
+        selected: false
+        title: list_account
+        type: code
+        variables:
+        - value_selector:
+          - '1724439010909'
+          - auth_bearer
+          variable: auth_bearer
+      height: 114
+      id: '1724439436176'
+      position:
+        x: 638
+        y: 498
+      positionAbsolute:
+        x: 638
+        y: 498
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\"\"\"\nInput Variables:\nauth_bearer: String\nOutput Variables:\n\
+          full: String, type: String\n\"\"\"\n\nimport httpx\n\ndef main(auth_bearer:\
+          \ str, account_id: str, namespace_id: str) -> dict:\n    url = f\"https://api.cloudflare.com/client/v4/accounts/{account_id}/storage/kv/namespaces/{namespace_id}/keys\"\
+          \n    headers = {\n        \"Content-Type\": \"application/json\",\n   \
+          \     \"Authorization\": f\"Bearer {auth_bearer}\"\n    }\n    with httpx.Client()\
+          \ as client:\n        response = client.get(url, headers=headers)\n    return\
+          \ {\n        \"full\": response.text,\n        \"type\": str(type(response))\n\
+          \    }"
+        code_language: python3
+        desc: 'List all key in KV.
+
+          May costly.'
+        outputs:
+          full:
+            children: null
+            type: string
+          type:
+            children: null
+            type: string
+        selected: false
+        title: list_key
+        type: code
+        variables:
+        - value_selector:
+          - '1724439010909'
+          - auth_bearer
+          variable: auth_bearer
+        - value_selector:
+          - '1724439010909'
+          - account_id
+          variable: account_id
+        - value_selector:
+          - '1724439010909'
+          - namespace_id
+          variable: namespace_id
+      height: 98
+      id: '1724439538081'
+      position:
+        x: 942
+        y: 548
+      positionAbsolute:
+        x: 942
+        y: 548
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 111
+      y: 113
+      zoom: 0.7

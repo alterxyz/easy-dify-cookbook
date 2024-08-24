@@ -1,0 +1,763 @@
+app:
+  description: May Better
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: Personalized Memory Assistant
+kind: app
+version: 0.1.1
+workflow:
+  conversation_variables:
+  - description: ''
+    id: a2560fcb-cca5-41cf-b747-f195c4436546
+    name: memory_plus
+    value: ''
+    value_type: string
+  - description: ''
+    id: af0a2101-6372-4a3c-98f9-199246d79ba7
+    name: first_message
+    value: 'Yes'
+    value_type: string
+  environment_variables:
+  - description: ''
+    id: 8e1f5dea-f6ba-4036-840e-e06373dee04e
+    name: cf_namespace_id_demo
+    value: ''
+    value_type: secret
+  - description: ''
+    id: 2383292b-3465-4181-8b5f-433a4394fd1c
+    name: cf_account_id
+    value: ''
+    value_type: secret
+  - description: ''
+    id: f482091f-1aa9-4dd9-a422-480bb79646d4
+    name: cf_auth_bearer
+    value: ''
+    value_type: secret
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: 'Welcome!
+
+
+      Visit <https://ezdify.alterxyz.org/> for more Dify guide,<https://discord.gg/FngNHpbcY7>
+      Join Discord Server and GLHF!
+
+
+      Made by AlterXYZ'
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1723433389887-source-1724439820927-target
+      source: '1723433389887'
+      sourceHandle: source
+      target: '1724439820927'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: tool
+      id: 1724439820927-true-1724439868664-target
+      source: '1724439820927'
+      sourceHandle: 'true'
+      target: '1724439868664'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: assigner
+      id: 1724439868664-source-1724439974396-target
+      source: '1724439868664'
+      sourceHandle: source
+      target: '1724439974396'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: assigner
+        targetType: assigner
+      id: 1724439974396-source-1724440068455-target
+      source: '1724439974396'
+      sourceHandle: source
+      target: '1724440068455'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: assigner
+        targetType: variable-aggregator
+      id: 1724440068455-source-1724440183671-target
+      source: '1724440068455'
+      sourceHandle: source
+      target: '1724440183671'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: question-classifier
+      id: 1724440183671-source-1724440263958-target
+      source: '1724440183671'
+      sourceHandle: source
+      target: '1724440263958'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: llm
+      id: 1724440263958-1-1724440465749-target
+      source: '1724440263958'
+      sourceHandle: '1'
+      target: '1724440465749'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: assigner
+      id: 1724440465749-source-1724440527474-target
+      source: '1724440465749'
+      sourceHandle: source
+      target: '1724440527474'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: assigner
+        targetType: tool
+      id: 1724440527474-source-1724440599820-target
+      source: '1724440527474'
+      sourceHandle: source
+      target: '1724440599820'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1724440599820-source-1724440773680-target
+      source: '1724440599820'
+      sourceHandle: source
+      target: '1724440773680'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: question-classifier
+        targetType: variable-aggregator
+      id: 1724440263958-2-1724440773680-target
+      source: '1724440263958'
+      sourceHandle: '2'
+      target: '1724440773680'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: llm
+      id: 1724440773680-source-1724440910179-target
+      source: '1724440773680'
+      sourceHandle: source
+      target: '1724440910179'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: variable-aggregator
+      id: 1724439820927-false-1724440183671-target
+      source: '1724439820927'
+      sourceHandle: 'false'
+      target: '1724440183671'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: answer
+      id: 1724440910179-source-1724441272802-target
+      source: '1724440910179'
+      sourceHandle: source
+      target: '1724441272802'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables: []
+      height: 54
+      id: '1723433389887'
+      position:
+        x: 345.94798933733614
+        y: 271.5182601339161
+      positionAbsolute:
+        x: 345.94798933733614
+        y: 271.5182601339161
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        author: Dify
+        desc: ''
+        height: 207
+        selected: false
+        showAuthor: true
+        text: '{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"When
+          we use memory, we directly insert it into the model''s context. At the same
+          time, session-level variables are not stored as vectors in the vector database
+          for semantic retrieval before subsequent Q&A. In real scenarios, more branching
+          logic is needed to update and maintain memory. Additionally, when the total
+          amount of memory exceeds the model''s context, RAG is used to allow LLMs
+          to respond with the most relevant memories. In summary, this is a very simple
+          case, and I look forward to seeing more uses of conversation variables from
+          the community!","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1,"textFormat":0}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}'
+        theme: yellow
+        title: '  (2)'
+        type: ''
+        width: 335
+      height: 207
+      id: '17235350709980'
+      position:
+        x: 2124.0245295585805
+        y: -57.498059908562624
+      positionAbsolute:
+        x: 2124.0245295585805
+        y: -57.498059908562624
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-note
+      width: 335
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: not empty
+            id: 4399a116-c09f-4eba-b844-362233628164
+            value: ''
+            varType: string
+            variable_selector:
+            - conversation
+            - first_message
+          id: 'true'
+          logical_operator: and
+        desc: If it is first message of the conversation
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 170
+      id: '1724439820927'
+      position:
+        x: 345.94798933733614
+        y: 363.1195117201595
+      positionAbsolute:
+        x: 345.94798933733614
+        y: 363.1195117201595
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: 'get_value
+
+          from Cloudflare Key_Value Data Storage'
+        provider_id: e9e9b7c3-d26c-4cae-8491-47ab0c2a751d
+        provider_name: Your Cloudflare KV
+        provider_type: workflow
+        selected: false
+        title: Cloudflare KV get_memory
+        tool_configurations: {}
+        tool_label: Your Cloudflare KV
+        tool_name: Your_Cloudflare_KV
+        tool_parameters:
+          account_id:
+            type: mixed
+            value: '{{#env.cf_account_id#}}'
+          auth_bearer:
+            type: mixed
+            value: '{{#env.cf_auth_bearer#}}'
+          key_name:
+            type: mixed
+            value: '{{#sys.user_id#}}'
+          method:
+            type: constant
+            value: get_value
+          namespace_id:
+            type: mixed
+            value: '{{#env.cf_namespace_id_demo#}}'
+        type: tool
+      height: 114
+      id: '1724439868664'
+      position:
+        x: 623.3969019210336
+        y: 175.93434543522739
+      positionAbsolute:
+        x: 623.3969019210336
+        y: 175.93434543522739
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - first_message
+        desc: 'Set the first_message to empty
+
+          So app know it is not first message of this conversation'
+        input_variable_selector: []
+        selected: false
+        title: Set
+        type: assigner
+        write_mode: clear
+      height: 192
+      id: '1724439974396'
+      position:
+        x: 623.3969019210336
+        y: 219.74363967212622
+      positionAbsolute:
+        x: 623.3969019210336
+        y: 219.74363967212622
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - memory_plus
+        desc: 'Write information from CF_KV
+
+          to Conversation Variable'
+        input_variable_selector:
+        - '1724439868664'
+        - text
+        selected: false
+        title: Load Memory
+        type: assigner
+        write_mode: over-write
+      height: 176
+      id: '1724440068455'
+      position:
+        x: 623.3969019210336
+        y: 260.8978251673951
+      positionAbsolute:
+        x: 623.3969019210336
+        y: 260.8978251673951
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: Load or skip memory load from server(Cloudflare KV or other source)
+        output_type: string
+        selected: false
+        title: Do or skip
+        type: variable-aggregator
+        variables:
+        - - '1724439868664'
+          - text
+      height: 156
+      id: '1724440183671'
+      position:
+        x: 924.9766999201299
+        y: 460.1048958769172
+      positionAbsolute:
+        x: 924.9766999201299
+        y: 460.1048958769172
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        classes:
+        - id: '1'
+          name: Yes - there is new information need to be added
+        - id: '2'
+          name: No - current memory contain enough information
+        desc: Write the prompt in Advanced Setting
+        instruction: "Determine if there is information in {{#sys.query#}} that needs\
+          \ to be stored as memory.\nThe definition of memory：Deduce the facts, preferences,\
+          \ and memories from the provided text. Constraint for deducing facts, preferences,\
+          \ and memories: - The facts, preferences, and memories should be concise\
+          \ and informative. - Don't start by \"The person likes Pizza\". Instead,\
+          \ start with \"Likes Pizza\". - Don't remember the user/agent details provided.\
+          \ Only remember the facts, preferences, and memories.  \n\n<current_memory>\n\
+          {{#conversation.memory_plus#}}\n</current_memory>\n"
+        instructions: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: claude-3-haiku-20240307
+          provider: anthropic
+        query_variable_selector:
+        - '1723433389887'
+        - sys.query
+        selected: false
+        title: Determine whether to store as memory.
+        topics: []
+        type: question-classifier
+      height: 260
+      id: '1724440263958'
+      position:
+        x: 924.9766999201299
+        y: 198.50276973908444
+      positionAbsolute:
+        x: 924.9766999201299
+        y: 198.50276973908444
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: claude-3-haiku-20240307
+          provider: anthropic
+        prompt_template:
+        - id: 2be25f62-0433-4331-81c3-f601d3830811
+          role: system
+          text: 'You are an AI assistant tasked with deducing facts, preferences,
+            and memories from a user query and associated metadata. Your goal is to
+            extract concise and informative details about the user based on the provided
+            information and update the existing memories if necessary.
+
+
+            The existing memories are:
+
+            <existing_memories>
+
+            {{#conversation.memory_plus#}}
+
+            </existing_memories>
+
+
+            Analyze the user input and metadata carefully. Look for any new information
+            that can be added to the existing memories. Pay attention to likes, dislikes,
+            habits, personal details, or any other relevant information that can be
+            inferred from the input.
+
+
+            Output your analysis using the following XML structure:
+
+            <name>User''s name (if available)</name>
+
+            <prefer>
+
+            <category1>Preference 1</category1>
+
+            <category2>Preference 2</category2>
+
+            ...
+
+            </prefer>
+
+            <fact>Deduced fact 1</fact>
+
+            <fact>Deduced fact 2</fact>
+
+            ...
+
+            <memory>Deduced memory 1</memory>
+
+            <memory>Deduced memory 2</memory>
+
+            ...
+
+
+            Follow these guidelines:
+
+            - Be concise and informative
+
+            - Start with the fact, preference, or memory directly (e.g., "Likes pizza"
+            instead of "The person likes pizza")
+
+            - Do not include the user/agent details provided in the metadata as part
+            of the deduced information
+
+            - If there are no new memories to add, repeat the existing memories exactly
+            as provided
+
+            - If there are new memories, integrate them with the existing ones and
+            output the complete, updated version
+
+            - Use appropriate tags for different types of information (e.g., <prefer>
+            for preferences, <fact> for facts, and <memory> for memories)
+
+            - Be as specific and detailed as possible within the constraints of the
+            given information
+
+            - If the existing memories are not in a valid format, correct and restructure
+            them as needed
+
+
+            Your output should contain only the XML content, nothing else.'
+        - id: 4f6ec08d-d538-4847-87f0-47171e31405a
+          role: user
+          text: 'Here is the user input:
+
+            <user_input>
+
+            {{#sys.query#}}
+
+            </user_input>
+
+            '
+        selected: false
+        title: Extract memory
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      height: 98
+      id: '1724440465749'
+      position:
+        x: 1219.4190598337093
+        y: 187.88233477256347
+      positionAbsolute:
+        x: 1219.4190598337093
+        y: 187.88233477256347
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - memory_plus
+        desc: Conversation Memory update
+        input_variable_selector:
+        - '1724440465749'
+        - text
+        selected: false
+        title: Conv Memory Update
+        type: assigner
+        write_mode: over-write
+      height: 160
+      id: '1724440527474'
+      position:
+        x: 1219.4190598337093
+        y: 225.05385715538688
+      positionAbsolute:
+        x: 1219.4190598337093
+        y: 225.05385715538688
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: 'Persistent Memory Update,
+
+          Store at Cloudflare KV or other data storage permanently'
+        provider_id: e9e9b7c3-d26c-4cae-8491-47ab0c2a751d
+        provider_name: Your Cloudflare KV
+        provider_type: workflow
+        selected: false
+        title: Memory Update
+        tool_configurations: {}
+        tool_label: Your Cloudflare KV
+        tool_name: Your_Cloudflare_KV
+        tool_parameters:
+          account_id:
+            type: mixed
+            value: '{{#env.cf_account_id#}}'
+          auth_bearer:
+            type: mixed
+            value: '{{#env.cf_auth_bearer#}}'
+          key_name:
+            type: mixed
+            value: '{{#sys.user_id#}}'
+          method:
+            type: constant
+            value: new_kv
+          namespace_id:
+            type: mixed
+            value: '{{#env.cf_namespace_id_demo#}}'
+          value:
+            type: mixed
+            value: '{{#conversation.memory_plus#}}'
+        type: tool
+      height: 114
+      id: '1724440599820'
+      position:
+        x: 1219.4190598337093
+        y: 271.5182601339161
+      positionAbsolute:
+        x: 1219.4190598337093
+        y: 271.5182601339161
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: Do or Skip
+        type: variable-aggregator
+        variables:
+        - - '1724439868664'
+          - text
+      height: 112
+      id: '1724440773680'
+      position:
+        x: 1271.5877833736606
+        y: 453.46712402284163
+      positionAbsolute:
+        x: 1271.5877833736606
+        y: 453.46712402284163
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        memory:
+          query_prompt_template: ''
+          role_prefix:
+            assistant: ''
+            user: ''
+          window:
+            enabled: false
+            size: 40
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: claude-3-5-sonnet-20240620
+          provider: anthropic
+        prompt_template:
+        - id: 659f7969-01be-4cb1-8cc2-03517b85cd1b
+          role: system
+          text: 'You are an expert at answering user message based on the provided
+            memories. Your task is to provide accurate and concise answers to the
+            questions by leveraging the information given in Guidelines: - Extract
+            relevant information from the memories based on the question. - If no
+            relevant information is found, make sure you don''t say no information
+            is found. Instead, accept the question and provide a general response.
+            - Ensure that the answers are clear, concise, and directly address the
+            question.
+
+            User''s memory:
+
+
+            <user_memory>
+
+            {{#conversation.memory_plus#}}
+
+            <user_memory>
+
+
+            Ensure that the language of the response is consistent with user''s query.'
+        selected: false
+        title: Respond
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: true
+      height: 98
+      id: '1724440910179'
+      position:
+        x: 1569.8536100622503
+        y: 210.45075907642058
+      positionAbsolute:
+        x: 1569.8536100622503
+        y: 210.45075907642058
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1724440910179.text#}}
+
+          ({{#sys.user_id#}})'
+        desc: ''
+        selected: false
+        title: Answer
+        type: answer
+        variables: []
+      height: 126
+      id: '1724441272802'
+      position:
+        x: 1569.8536100622503
+        y: 254.26005331331953
+      positionAbsolute:
+        x: 1569.8536100622503
+        y: 254.26005331331953
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -250.02904138488657
+      y: 368.9221642603859
+      zoom: 0.7532648168571792
