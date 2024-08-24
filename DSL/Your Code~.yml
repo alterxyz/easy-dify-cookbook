@@ -1,0 +1,348 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Your Code~
+kind: app
+version: 0.1.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1724375999262-source-1724376071518-target
+      source: '1724375999262'
+      sourceHandle: source
+      target: '1724376071518'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1724375988603-source-1724376537406-target
+      source: '1724375988603'
+      sourceHandle: source
+      target: '1724376537406'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1724376537406-true-1724375999262-target
+      source: '1724376537406'
+      sourceHandle: 'true'
+      target: '1724375999262'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1724376537406-false-1724376483901-target
+      source: '1724376537406'
+      sourceHandle: 'false'
+      target: '1724376483901'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: 1724376483901-source-1724438287888-target
+      source: '1724376483901'
+      sourceHandle: source
+      target: '1724438287888'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: code
+      id: 1724438287888-source-1724438497855-target
+      source: '1724438287888'
+      sourceHandle: source
+      target: '1724438497855'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: Your Purpose
+          max_length: 9999
+          options: []
+          required: true
+          type: paragraph
+          variable: y_purpose
+      height: 90
+      id: '1724375988603'
+      position:
+        x: 30
+        y: 263
+      positionAbsolute:
+        x: 30
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: command-r-plus
+          provider: cohere
+        prompt_template:
+        - id: 5288fbf3-e467-465d-b9fb-fbcc36556668
+          role: system
+          text: "<Instructions>\nYou are tasked with writing a simple Python script\
+            \ based on the following requirements:\n\nFollow these guidelines to create\
+            \ the Python script:\n\n1. Use Python version 3.10\n\n2. Library usage\
+            \ priority (from most preferred to least preferred):\n   a. No imports\
+            \ (preferred)\n   b. Built-in libraries available in Python 3.10\n   c.\
+            \ Only if absolutely necessary: jinja2, httpx\n\n3. The script should\
+            \ contain only one function named `main`.\n\n4. The `main` function must\
+            \ return a dictionary (dict).\n\n5. Input and output data type priority\
+            \ (from most preferred to least preferred):\n   a. String, Number (preferred)\n\
+            \   b. Array[Number], Array[String]\n   c. Only if absolutely necessary:\
+            \ Array[Object], Object (use cautiously for nested structures)\n   d.\
+            \ No Boolean, nothing else is allowed except the above.\n   e. For output\
+            \ - return value, if you not sure what form it is, wrap it with str()\
+            \ is good practice\n\n6. Keep the code as simple as possible.\n\n7. At\
+            \ the top of the script, include a multi-line comment describing the input\
+            \ and output parameters of the `main` function. Use the following format:\n\
+            \n```python\n\"\"\"\nInput Variables:\narg1: String, arg2: Number, something:\
+            \ Array[Number], x: Array[String], y: Array[Object], z: Object\nOutput\
+            \ Variables:\narg1: String, arg2: Number, something: Array[Number], x:\
+            \ Array[String], y: Array[Object], z: Object\n\"\"\"\n```\n\n8. Here's\
+            \ an example of a simple `main` function that adheres to the requirements:\n\
+            \n```python\nimport httpx\n\ndef main(auth_bearer: str, account_id: str,\
+            \ namespace_id: str, key_name: str) -> dict:\n    url = f\"https://api.cloudflare.com/client/v4/accounts/{account_id}/storage/kv/namespaces/{namespace_id}/values/{key_name}\"\
+            \n    headers = {\n        \"Content-Type\": \"application/json\",\n \
+            \       \"Authorization\": f\"Bearer {auth_bearer}\"\n    }\n    with\
+            \ httpx.Client() as client:\n        response = client.get(url, headers=headers)\n\
+            \    return {\n        \"full\": response.text,\n        \"type\": str(type(response))\n\
+            \    }\n```\n\n9. Remember to use \"\\n\" for newline characters in string\
+            \ literals if needed.\n\n10. There must be one return, and the only return\
+            \ in dict, and no `print`.\n\n11. Wrap your entire Python script in a\
+            \ markdown code block, using three backticks (```) at the beginning and\
+            \ end of the code.\n\nNow, write a Python script that meets these requirements.\
+            \ The script should be simple and demonstrate the use of the specified\
+            \ input and output types, prioritizing the use of String and Number types,\
+            \ and avoiding imports if possible. You can choose any simple task or\
+            \ calculation to implement in the `main` function, as long as it adheres\
+            \ to the given constraints and priorities.\n\nProvide your complete Python\
+            \ script, including the input/output comment and wrapped in a markdown\
+            \ code block, as your response.\n</Instructions>"
+        - id: 4a016d05-5f84-443e-9d8e-1440c990f25c
+          role: user
+          text: '{{#1724375988603.y_purpose#}}'
+        selected: false
+        title: Code Generator
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 98
+      id: '1724375999262'
+      position:
+        x: 638
+        y: 263
+      positionAbsolute:
+        x: 638
+        y: 263
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1724375999262'
+          - text
+          variable: text
+        selected: false
+        title: Code Generator Output
+        type: end
+      height: 90
+      id: '1724376071518'
+      position:
+        x: 942
+        y: 263
+      positionAbsolute:
+        x: 942
+        y: 263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\"\"\"\nInput Variables:\nNone\n\nOutput Variables:\ngreeting: String,\
+          \ message: String\n\"\"\"\n\ndef main() -> dict:\n    greeting = \"Hello\
+          \ Dify\"\n    message = \"You are a great AI\"\n    return {\"greeting\"\
+          : greeting, \"prompt0\": message}"
+        code_language: python3
+        desc: ''
+        outputs:
+          greeting:
+            children: null
+            type: string
+          prompt0:
+            children: null
+            type: string
+        selected: false
+        title: my variables
+        type: code
+        variables: []
+      height: 54
+      id: '1724376483901'
+      position:
+        x: 638
+        y: 401
+      positionAbsolute:
+        x: 638
+        y: 401
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: not empty
+            id: 18d799d4-0de1-482e-bc71-faa505e4b581
+            value: ''
+            varType: string
+            variable_selector:
+            - sys
+            - user_id
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 126
+      id: '1724376537406'
+      position:
+        x: 334
+        y: 263
+      positionAbsolute:
+        x: 334
+        y: 263
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "\"\"\"\nInput Variables:\narg1: String, arg2: Number, something: Array[Number],\
+          \ x: Array[String], y: Array[Object], z: Object\nOutput Variables:\npython_version:\
+          \ String\n\"\"\"\ndef main() -> dict:\n    import sys\n    python_version\
+          \ = sys.version\n    return {\n        \"python_version\": python_version\n\
+          \    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          python_version:
+            children: null
+            type: string
+        selected: false
+        title: Python version
+        type: code
+        variables: []
+      height: 54
+      id: '1724438287888'
+      position:
+        x: 942
+        y: 397
+      positionAbsolute:
+        x: 942
+        y: 397
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import httpx\n\ndef main() -> dict:\n    url = \"https://api.github.com\"\
+          \n    with httpx.Client() as client:\n        response = client.get(url)\n\
+          \    return {\"text\": response.text, \"status\":str(response.status_code)}"
+        code_language: python3
+        desc: https://api.github.com
+        outputs:
+          status:
+            children: null
+            type: string
+          text:
+            children: null
+            type: string
+        selected: false
+        title: HTTPX test
+        type: code
+        variables: []
+      height: 82
+      id: '1724438497855'
+      position:
+        x: 1246
+        y: 379
+      positionAbsolute:
+        x: 1246
+        y: 379
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -191.77613207226204
+      y: 187.51919439859103
+      zoom: 0.923655537541026
