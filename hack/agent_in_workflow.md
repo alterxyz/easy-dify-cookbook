@@ -63,3 +63,13 @@ def main(api_key: str, query: str, var_name: str, var_input: str, user: str) -> 
 The result would be like:
 
 ![image](https://github.com/user-attachments/assets/2c80f051-4fe3-4ea8-a2a6-b3ad7be86088)
+
+View more about code block here:
+
+<https://ezdify.alterxyz.org/cookbook/#code-block>
+
+<https://github.com/alterxyz/easy-dify-cookbook/blob/main/prompt/code_generator.md>
+
+---
+
+Alter link: <https://ezdify.alterxyz.org/cookbook/#dify-agent-inside-chatflow-or-workflow>
