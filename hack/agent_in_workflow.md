@@ -1,10 +1,8 @@
 # Dify Agent inside Chatflow or Workflow
 
-Use a code block, and set all necessary parameter.
+Use a code block, and set all necessary parameters.
 
-Use the input and output variables notes for your setting.
-
-The code I use for code block is here:
+The code I use for the code block is here:
 
 ```python
 """
@@ -70,6 +68,76 @@ View more about code block here:
 
 <https://github.com/alterxyz/easy-dify-cookbook/blob/main/prompt/code_generator.md>
 
+## Detailed breakdown
+
+> Due to some security standards, it may also be named as `agent_id`
+
+The api_key refers to your Backend Service API Secret Key
+
+![image](https://github.com/user-attachments/assets/65ac5f2a-2337-4e8c-8aac-26b6cd6eb1c7)
+
+### Security store your key
+
+![image](https://github.com/user-attachments/assets/0126e9e9-632f-4874-9701-3ae18bd871c4)
+
+Storing your key in Environment Variables is a good option, this only works for the specific app, not your whole Dify Studio.
+
+Please also note that storing as a `Secret` means you will not be able to retrieve it later.
+
+### Variables
+
+The Agent allows you to make variables and use them somewhere; this example also supports this.
+
+The initial one allows you to make one variable; you can increase or delete it as needed.
+
+Example for no variables:
+
+```python
+def main(api_key: str, query: str, user: str) -> dict:
+    import httpx
+    import json
+
+    url = "https://api.dify.ai/v1/chat-messages"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream"
+    }
+    data = {
+        "inputs": {},
+
+# The rest are the same
+```
+
+For 3 variables with fixed variable names:
+
+```python
+def main(api_key: str, query: str, var_abc: str, var_xyz: str, user: str, something: str) -> dict:
+    import httpx
+    import json
+
+    url = "https://api.dify.ai/v1/chat-messages"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream"
+    }
+    data = {
+        "inputs": {"abc": var_abc, "xyz": var_xyz, "something_else": something},
+# The rest are same
+```
+
+Please let me know if you have any additional questions.
+
+By GitHub Issue: <https://github.com/alterxyz/easy-dify-cookbook/issues/new>
+
+Using this prompt and this page's details with any LLM or coding expert would be a good option for questions or customization.
+
+<https://github.com/alterxyz/easy-dify-cookbook/blob/main/prompt/code_generator.md>
+
+
 ---
 
 Alter link: <https://ezdify.alterxyz.org/cookbook/#dify-agent-inside-chatflow-or-workflow>
+
+Difyshare: <https://difyshare.com/flow/66f328dd00181db9338e>
