@@ -1,20 +1,20 @@
-# Dify Agent inside Chatflow or Workflow
+# Integrating Dify Agent in Chatflow or Workflow
 
-This demo is intended for a one-time invocation of Agent. You should reference the returned `response_text`
+**Level: Advanced** This guide requires some knowledge of programming, Python, and Dify.
 
-Use a code block, and set all necessary parameters.
+This demonstration showcases a single invocation of the Agent. You should refer to the returned `response_text` for results.
 
-The code I use for the code block is here:
+Use a code block and set all necessary parameters.
+
+Please note that you may encounter timeout or other issues, as the current limit for a single workflow execution is approximately 30 seconds.
+
+We encourage you to discuss this cookbook in the [Issues](https://github.com/alterxyz/easy-dify-cookbook/issues) section or submit [Pull requests](https://github.com/alterxyz/easy-dify-cookbook/pulls) to refine it.
+
+The code used for this block is as follows:
 
 ```python
 """
-Input Variables:
-api_key: String, query: String, var_name: String, var_input: String, user: String
-Output Variables:
-status_code: Number, response_text: String, conversation_id: String, usage: Object
-"""
-
-def main(api_key: str, query: str, var_name: str, var_input: str, user: str) -> dict:
+def main(api_key: str, query: str, user: str) -> dict:
     import httpx
     import json
 
@@ -25,7 +25,7 @@ def main(api_key: str, query: str, var_name: str, var_input: str, user: str) -> 
         "Accept": "text/event-stream"
     }
     data = {
-        "inputs": {var_name: var_input},
+        "inputs": {},
         "query": query,
         "response_mode": "streaming",
         "conversation_id": "",
@@ -55,12 +55,11 @@ def main(api_key: str, query: str, var_name: str, var_input: str, user: str) -> 
                         pass
 
     return {
-        "status_code": response.status_code,
         "response_text": full_response,
     }
 ```
 
-The result would be like:
+The result would be like(outdated):
 
 ![image](https://github.com/user-attachments/assets/2c80f051-4fe3-4ea8-a2a6-b3ad7be86088)
 
@@ -76,7 +75,7 @@ View more about code block here:
 
 > Due to some security standards, it may also be named as `agent_id`
 
-The api_key refers to your Backend Service API Secret Key
+The api_key refers to your Backend Service API Secret Key. You should get it from your Agent not the Chatflow/Workflow.
 
 ![image](https://github.com/user-attachments/assets/65ac5f2a-2337-4e8c-8aac-26b6cd6eb1c7)
 
@@ -92,12 +91,13 @@ Please also note that storing as a `Secret` means you will not be able to retrie
 
 The Agent allows you to make variables and use them somewhere; this example also supports this.
 
-The initial one allows you to make one variable; you can increase or delete it as needed.
+The initial one allows you to make 0 variable; you can increase or delete it as needed.
 
-Example for no variables:
+Example for 1 dynamic variables:
 
 ```python
-def main(api_key: str, query: str, user: str) -> dict:
+
+def main(api_key: str, query: str, var_name: str, var_input: str, user: str) -> dict:
     import httpx
     import json
 
@@ -108,8 +108,7 @@ def main(api_key: str, query: str, user: str) -> dict:
         "Accept": "text/event-stream"
     }
     data = {
-        "inputs": {},
-
+        "inputs": {var_name: var_input},
 # The rest are the same
 ```
 
@@ -142,15 +141,13 @@ Using this prompt and this page's details with any LLM or coding expert would be
 
 ### Advance
 
-However, you can continue chat with Agent, by implement some if-else node and conversation variable feature.
-
-Here is my code that may help:
+Ccontinue chat with Agent, by implement some if-else node and conversation variable feature.
 
 ```python
 import httpx
 import json
 
-def first_message_to_dify(api_key: str, query: str, user: str, inputs: dict) -> dict:
+def main(api_key: str, query: str, user: str) -> dict:
 
     url = "https://api.dify.ai/v1/chat-messages"
     headers = {
@@ -159,7 +156,7 @@ def first_message_to_dify(api_key: str, query: str, user: str, inputs: dict) -> 
         "Accept": "text/event-stream",
     }
     data = {
-        "inputs": inputs,
+        "inputs": {}, # or `inputs` with `inputs: dict`
         "query": query,
         "response_mode": "streaming",
         "conversation_id": "",
@@ -193,13 +190,32 @@ def first_message_to_dify(api_key: str, query: str, user: str, inputs: dict) -> 
                         pass
 
     return {
-        "status_code": response.status_code,
         "response_text": full_response,
         "conversation_id": conversation_id,
-        "metadata": metadata,
     }
+```
 
+```python
+import httpx
+import json
 
+def main(
+    api_key: str, query: str, user: str, conversation_id: str
+) -> dict:
+    url = "https://api.dify.ai/v1/chat-messages"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+    }
+    data = {
+        "inputs": {},
+        "query": query,
+        "response_mode": "streaming",
+        "conversation_id": conversation_id,
+        "user": user,
+        "files": [],
+    }
 
     full_response = ""
     metadata = ""
@@ -224,12 +240,12 @@ def first_message_to_dify(api_key: str, query: str, user: str, inputs: dict) -> 
                         pass
 
     return {
-        "status_code": response.status_code,
         "response_text": full_response,
-        "conversation_id": conversation_id,
-        "metadata": metadata,
     }
+
 ```
+
+Example: <https://github.com/alterxyz/easy-dify-cookbook/blob/main/hack/Dify%20Agent%20inside%20Chatflow%20or%20Workflow.yml>
 
 ---
 
