@@ -2,9 +2,11 @@
 
 **Level: Advanced** This guide requires some knowledge of programming, Python, and Dify.
 
+> Code nodes should not be used for long-term tasks.
+
 This demonstration showcases a single invocation of the Agent. You should refer to the returned `response_text` for results.
 
-Use a code block and set all necessary parameters.
+Add a Block of Code with the Python code below and set all necessary parameters.
 
 Please note that you may encounter timeout or other issues, as the current limit for a single workflow execution is approximately 30 seconds.
 
@@ -246,6 +248,8 @@ def main(
 ```
 
 Example: <https://github.com/alterxyz/easy-dify-cookbook/blob/main/hack/Dify%20Agent%20inside%20Chatflow%20or%20Workflow.yml>
+![image](https://github.com/user-attachments/assets/072a82d3-c13d-4852-a534-62c9cc5c94e5)
+
 
 ---
 
