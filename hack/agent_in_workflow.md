@@ -1,5 +1,7 @@
 # Dify Agent inside Chatflow or Workflow
 
+This demo is intended for a one-time invocation of Agent. You should reference the returned `response_text`
+
 Use a code block, and set all necessary parameters.
 
 The code I use for the code block is here:
@@ -70,6 +72,8 @@ View more about code block here:
 
 ## Detailed breakdown
 
+### Get your Dify Agent API key
+
 > Due to some security standards, it may also be named as `agent_id`
 
 The api_key refers to your Backend Service API Secret Key
@@ -135,6 +139,97 @@ Using this prompt and this page's details with any LLM or coding expert would be
 
 <https://github.com/alterxyz/easy-dify-cookbook/blob/main/prompt/code_generator.md>
 
+
+### Advance
+
+However, you can continue chat with Agent, by implement some if-else node and conversation variable feature.
+
+Here is my code that may help:
+
+```python
+import httpx
+import json
+
+def first_message_to_dify(api_key: str, query: str, user: str, inputs: dict) -> dict:
+
+    url = "https://api.dify.ai/v1/chat-messages"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+        "Accept": "text/event-stream",
+    }
+    data = {
+        "inputs": inputs,
+        "query": query,
+        "response_mode": "streaming",
+        "conversation_id": "",
+        "user": user,
+        "files": [],
+    }
+
+    full_response = ""
+    conversation_id = ""
+    metadata = ""
+
+    with httpx.Client() as client:
+        with client.stream("POST", url, json=data, headers=headers) as response:
+            for line in response.iter_lines():
+                if line.startswith("data: "):
+                    try:
+                        event_data = json.loads(line[6:])
+                        # print(event_data)
+                        if (
+                            event_data["event"] == "agent_message"
+                            or event_data["event"] == "message"
+                        ):
+                            full_response += event_data.get("answer", "")
+                        elif event_data["event"] == "message_end":
+                            conversation_id = event_data.get(
+                                "conversation_id", "")
+                            metadata = event_data
+                    except json.JSONDecodeError:
+                        pass
+                    except KeyError:
+                        pass
+
+    return {
+        "status_code": response.status_code,
+        "response_text": full_response,
+        "conversation_id": conversation_id,
+        "metadata": metadata,
+    }
+
+
+
+    full_response = ""
+    metadata = ""
+
+    with httpx.Client() as client:
+        with client.stream("POST", url, json=data, headers=headers) as response:
+            for line in response.iter_lines():
+                if line.startswith("data: "):
+                    try:
+                        event_data = json.loads(line[6:])
+                        # print(event_data)
+                        if (
+                            event_data["event"] == "agent_message"
+                            or event_data["event"] == "message"
+                        ):
+                            full_response += event_data.get("answer", "")
+                        elif event_data["event"] == "message_end":
+                            metadata = event_data
+                    except json.JSONDecodeError:
+                        pass
+                    except KeyError:
+                        pass
+
+    return {
+        "status_code": response.status_code,
+        "response_text": full_response,
+        "conversation_id": conversation_id,
+        "metadata": metadata,
+    }
+```
 
 ---
 
