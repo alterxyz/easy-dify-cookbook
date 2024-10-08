@@ -1,0 +1,370 @@
+app:
+  description: ''
+  icon: writing_hand
+  icon_background: '#D1E9FF'
+  mode: advanced-chat
+  name: Hi
+  use_icon_as_answer_icon: false
+kind: app
+version: 0.1.2
+workflow:
+  conversation_variables:
+  - description: ''
+    id: 47a905b6-e369-4004-a743-98e49b642944
+    name: conv_id
+    value: ''
+    value_type: string
+  environment_variables:
+  - description: ''
+    id: f52d0236-5f8a-4a8f-82c8-1315c6e36ad5
+    name: agent_api_key
+    value: your agent key here
+    value_type: string
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - remote_url
+        - local_file
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1727427787966-source-1728359916481-target
+      source: '1727427787966'
+      sourceHandle: source
+      target: '1728359916481'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1728359916481-true-1728359198693-target
+      source: '1728359916481'
+      sourceHandle: 'true'
+      target: '1728359198693'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: assigner
+      id: 1728359198693-source-1728359946376-target
+      source: '1728359198693'
+      sourceHandle: source
+      target: '1728359946376'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: code
+      id: 1728359916481-false-1728359963648-target
+      source: '1728359916481'
+      sourceHandle: 'false'
+      target: '1728359963648'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: assigner
+        targetType: variable-aggregator
+      id: 1728359946376-source-1728360071236-target
+      source: '1728359946376'
+      sourceHandle: source
+      target: '1728360071236'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: answer
+      id: 1728360071236-source-1727669937588-target
+      source: '1728360071236'
+      sourceHandle: source
+      target: '1727669937588'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: variable-aggregator
+      id: 1728359963648-source-1728360071236-target
+      source: '1728359963648'
+      sourceHandle: source
+      target: '1728360071236'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables: []
+      height: 54
+      id: '1727427787966'
+      position:
+        x: 339.4132734518229
+        y: 186.71824353229272
+      positionAbsolute:
+        x: 339.4132734518229
+        y: 186.71824353229272
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1728360071236.output#}}'
+        desc: ''
+        selected: false
+        title: Answer
+        type: answer
+        variables: []
+      height: 107
+      id: '1727669937588'
+      position:
+        x: 973.5914651475659
+        y: 368.3555374819459
+      positionAbsolute:
+        x: 973.5914651475659
+        y: 368.3555374819459
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import httpx\nimport json\n\ndef main(api_key: str, query: str, user:\
+          \ str) -> dict:\n\n    url = \"https://api.dify.ai/v1/chat-messages\"\n\
+          \    headers = {\n        \"Authorization\": f\"Bearer {api_key}\",\n  \
+          \      \"Content-Type\": \"application/json\",\n        \"Accept\": \"text/event-stream\"\
+          ,\n    }\n    data = {\n        \"inputs\": {},\n        \"query\": query,\n\
+          \        \"response_mode\": \"streaming\",\n        \"conversation_id\"\
+          : \"\",\n        \"user\": user,\n        \"files\": [],\n    }\n\n    full_response\
+          \ = \"\"\n    conversation_id = \"\"\n    metadata = \"\"\n\n    with httpx.Client()\
+          \ as client:\n        with client.stream(\"POST\", url, json=data, headers=headers)\
+          \ as response:\n            for line in response.iter_lines():\n       \
+          \         if line.startswith(\"data: \"):\n                    try:\n  \
+          \                      event_data = json.loads(line[6:])\n             \
+          \           # print(event_data)\n                        if (\n        \
+          \                    event_data[\"event\"] == \"agent_message\"\n      \
+          \                      or event_data[\"event\"] == \"message\"\n       \
+          \                 ):\n                            full_response += event_data.get(\"\
+          answer\", \"\")\n                        elif event_data[\"event\"] == \"\
+          message_end\":\n                            conversation_id = event_data.get(\n\
+          \                                \"conversation_id\", \"\")\n          \
+          \                  metadata = event_data\n                    except json.JSONDecodeError:\n\
+          \                        pass\n                    except KeyError:\n  \
+          \                      pass\n\n    return {\n        \"response_text\":\
+          \ full_response,\n        \"conversation_id\": conversation_id,\n    }"
+        code_language: python3
+        desc: ''
+        outputs:
+          conversation_id:
+            children: null
+            type: string
+          response_text:
+            children: null
+            type: string
+        selected: false
+        title: Agent without variable
+        type: code
+        variables:
+        - value_selector:
+          - sys
+          - query
+          variable: query
+        - value_selector:
+          - sys
+          - user_id
+          variable: user
+        - value_selector:
+          - env
+          - agent_api_key
+          variable: api_key
+      height: 54
+      id: '1728359198693'
+      position:
+        x: 627.1734530963543
+        y: 144.49471060807448
+      positionAbsolute:
+        x: 627.1734530963543
+        y: 144.49471060807448
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        cases:
+        - case_id: 'true'
+          conditions:
+          - comparison_operator: empty
+            id: 329b9ff7-6129-42e0-a90c-effb7838758e
+            value: ''
+            varType: string
+            variable_selector:
+            - conversation
+            - conv_id
+          id: 'true'
+          logical_operator: and
+        desc: ''
+        selected: false
+        title: IF/ELSE
+        type: if-else
+      height: 126
+      id: '1728359916481'
+      position:
+        x: 339.4132734518229
+        y: 269
+      positionAbsolute:
+        x: 339.4132734518229
+        y: 269
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - conv_id
+        desc: ''
+        input_variable_selector:
+        - '1728359198693'
+        - conversation_id
+        selected: false
+        title: Variable Assigner
+        type: assigner
+        write_mode: over-write
+      height: 132
+      id: '1728359946376'
+      position:
+        x: 627.1734530963543
+        y: 213.78461079140692
+      positionAbsolute:
+        x: 627.1734530963543
+        y: 213.78461079140692
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        code: "import httpx\nimport json\n\ndef main(\n    api_key: str, query: str,\
+          \ user: str, conversation_id: str\n) -> dict:\n    url = \"https://api.dify.ai/v1/chat-messages\"\
+          \n    headers = {\n        \"Authorization\": f\"Bearer {api_key}\",\n \
+          \       \"Content-Type\": \"application/json\",\n        \"Accept\": \"\
+          text/event-stream\",\n    }\n    data = {\n        \"inputs\": {},\n   \
+          \     \"query\": query,\n        \"response_mode\": \"streaming\",\n   \
+          \     \"conversation_id\": conversation_id,\n        \"user\": user,\n \
+          \       \"files\": [],\n    }\n\n    full_response = \"\"\n    metadata\
+          \ = \"\"\n\n    with httpx.Client() as client:\n        with client.stream(\"\
+          POST\", url, json=data, headers=headers) as response:\n            for line\
+          \ in response.iter_lines():\n                if line.startswith(\"data:\
+          \ \"):\n                    try:\n                        event_data = json.loads(line[6:])\n\
+          \                        # print(event_data)\n                        if\
+          \ (\n                            event_data[\"event\"] == \"agent_message\"\
+          \n                            or event_data[\"event\"] == \"message\"\n\
+          \                        ):\n                            full_response +=\
+          \ event_data.get(\"answer\", \"\")\n                        elif event_data[\"\
+          event\"] == \"message_end\":\n                            metadata = event_data\n\
+          \                    except json.JSONDecodeError:\n                    \
+          \    pass\n                    except KeyError:\n                      \
+          \  pass\n\n    return {\n        \"response_text\": full_response,\n   \
+          \ }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          response_text:
+            children: null
+            type: string
+        selected: false
+        title: Agent Continue chat
+        type: code
+        variables:
+        - value_selector:
+          - env
+          - agent_api_key
+          variable: api_key
+        - value_selector:
+          - sys
+          - query
+          variable: query
+        - value_selector:
+          - sys
+          - user_id
+          variable: user
+        - value_selector:
+          - conversation
+          - conv_id
+          variable: conversation_id
+      height: 54
+      id: '1728359963648'
+      position:
+        x: 627.1734530963543
+        y: 383.61930141067785
+      positionAbsolute:
+        x: 627.1734530963543
+        y: 383.61930141067785
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        output_type: string
+        selected: false
+        title: Variable Aggregator
+        type: variable-aggregator
+        variables:
+        - - '1728359198693'
+          - response_text
+        - - '1728359963648'
+          - response_text
+      height: 138
+      id: '1728360071236'
+      position:
+        x: 973.5914651475659
+        y: 222.26716164637554
+      positionAbsolute:
+        x: 973.5914651475659
+        y: 222.26716164637554
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: -236.8843960859258
+      y: 334.61671774187124
+      zoom: 0.804088848497925
